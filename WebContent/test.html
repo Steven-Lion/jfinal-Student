@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <title></title>
+<script type="text/javascript" src="Jquery-easyUI/jquery.min.js"></script>
+	<script type="text/javascript" src="Jquery-easyUI/jquery.easyui.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="Jquery-easyUI/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="Jquery-easyUI/themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="Jquery-easyUI/demo/demo.css"></link>
+    <script type="text/javascript">
+        var bSave = false;
+        var bClose = true;
+        $(function () {
+            $("#btnOpen").click(function () {
+                bSave = false;       //模拟标记数据是否保存，如果没保存，询问是否退出
+                bClose = false;
+                $("#myDialog").dialog({ title: "测试对话框", width: 600, height: 300, modal: true,
+                    onBeforeClose: function () {
+                        if (!bSave && !bClose) {
+                            $.messager.confirm("提醒", "信息尚未保存，是否退出?",
+                                function (r) {
+                                    if (r) {
+                                        bClose = true;//标记可以退出
+                                        $("#myDialog").dialog("close");
+                                    }
+                                });
+                        }
+                        return bClose;  //通过全局变量来控制是否关闭窗口
+                    },
+                    buttons: [{
+                        text: "确定",
+                        iconCls: 'icon-ok',
+                        handler: function () {
+                            bSave = true;
+                            bClose = true;
+                            $("#myDialog").dialog("close");
+                        }
+                    },
+                    {
+                        text: "取消",
+                        iconCls: "icon-tools",
+                        handler: function () {
+                            $("#myDialog").dialog("close");
+                        }
+                    }]
+ 
+                });
+            });
+ 
+ 
+        });
+    </script>
+</head>
+<body>
+    <div id="myLayout" class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'center'">
+            <div id="myTabs" class="easyui-tabs" data-options="fit:true">
+                <div title="Tab1" style="padding: 20px;">
+                    <input type="button" id="btnOpen" value="单击我打开窗口" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="myDialog" title="My Dialog">
+        <div class="easyui-layout" data-options="fit:true">
+            <div data-options="region:'center'">
+            </div>
+        </div>
+    </div>
+</body>
+</html>  
